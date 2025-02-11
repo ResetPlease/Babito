@@ -1,10 +1,9 @@
 CREATE TABLE Users
 (
     id SERIAL PRIMARY KEY,
-    username VARCHAR(255) NOT NULL,
+    username VARCHAR(255) UNIQUE NOT NULL,
     hashed_password VARCHAR(128) NOT NULL,
-    balance INTEGER NOT NULL,
-    CHECK (balance >= 0)
+    balance INTEGER NOT NULL CHECK (balance >= 0)
 );
 
 CREATE TABLE Products
@@ -14,7 +13,7 @@ CREATE TABLE Products
     price INTEGER NOT NULL
 );
 
-CREATE TABLE Operation 
+CREATE TABLE Operations 
 (
     id SERIAL PRIMARY KEY,
     user_id INTEGER REFERENCES Users(id) ON DELETE CASCADE,
@@ -33,5 +32,5 @@ CREATE TABLE Inventory
 );
 
 CREATE INDEX idx_username ON Users(username);
-CREATE INDEX operation_idx_user_id ON Operation(user_id);
+CREATE INDEX operation_idx_user_id ON Operations(user_id);
 CREATE INDEX inventory_idx_user_id ON Inventory(user_id);
