@@ -1,9 +1,13 @@
 package handlers
 
-import "log/slog"
+import (
+	"log/slog"
+
+	"github.com/ResetPlease/Babito/internal/models"
+)
 
 type Database interface {
-	TestFunction(id string) bool
+	GetUserDataByUserID(id uint64) (*models.User, error)
 }
 
 type Handler struct {
