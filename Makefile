@@ -7,7 +7,12 @@ default: help
 generate-models:
 	oapi-codegen -package models -generate types -o internal/models/generated/models.go schemas/openapi.yaml
     
+.PHONY: clear-logs
+clear-logs:
+	rm -r ./*/*.log
+
 .PHONY: help
 help:
 	@echo "Доступные команды:"
 	@echo "  generate-models  -  Сгенерировать модели из openapi спецификации"
+	@echo "  clear-logs  -  Удалить файлы логов"
