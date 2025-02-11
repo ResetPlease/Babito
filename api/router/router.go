@@ -4,12 +4,13 @@ import (
 	"log/slog"
 
 	"github.com/ResetPlease/Babito/api/handlers"
+	"github.com/ResetPlease/Babito/internal/db"
 	"github.com/gin-gonic/gin"
 )
 
-func SetupRouter(logger *slog.Logger) *gin.Engine {
+func SetupRouter(database *db.DatabaseController, logger *slog.Logger) *gin.Engine {
 	r := gin.Default()
-	handler := handlers.NewHandler(nil, logger)
+	handler := handlers.NewHandler(database, logger)
 
 	r.GET("/api/info", handler.InfoHanlder)
 	r.GET("/api/buy/:item", handler.BuyItemHandler)
