@@ -6,7 +6,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func InfoHanlder(c *gin.Context) {
+func (h *Handler) InfoHanlder(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{
 		"Message": "OK",
 	})
