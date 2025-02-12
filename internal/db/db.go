@@ -10,28 +10,28 @@ import (
 )
 
 type DatabaseCreds struct {
-	host     string
-	port     string
-	user     string
-	password string
-	dbname   string
+	Host     string
+	Port     string
+	User     string
+	Password string
+	DBname   string
 }
 
-func getCredentials() DatabaseCreds {
+func GetCredentials() DatabaseCreds {
 	var creds DatabaseCreds
-	creds.host = tools.GetenvWithPanic("DATABASE_HOST")
-	creds.port = tools.GetenvWithPanic("DATABASE_PORT")
-	creds.user = tools.GetenvWithPanic("DATABASE_USER")
-	creds.password = tools.GetenvWithPanic("DATABASE_PASSWORD")
-	creds.dbname = tools.GetenvWithPanic("DATABASE_NAME")
+	creds.Host = tools.GetenvWithPanic("DATABASE_HOST")
+	creds.Port = tools.GetenvWithPanic("DATABASE_PORT")
+	creds.User = tools.GetenvWithPanic("DATABASE_USER")
+	creds.Password = tools.GetenvWithPanic("DATABASE_PASSWORD")
+	creds.DBname = tools.GetenvWithPanic("DATABASE_NAME")
 	return creds
 }
 
-func databaseSetup(logger *slog.Logger) (*sql.DB, error) {
-	dbCreds := getCredentials()
+func databaseSetup(getCreds func() DatabaseCreds, logger *slog.Logger) (*sql.DB, error) {
+	dbCreds := getCreds()
 
 	psqlInfo := fmt.Sprintf("host=%s port=%s user=%s password=%s dbname=%s sslmode=disable",
-		dbCreds.host, dbCreds.port, dbCreds.user, dbCreds.password, dbCreds.dbname)
+		dbCreds.Host, dbCreds.Port, dbCreds.User, dbCreds.Password, dbCreds.DBname)
 
 	db, err := sql.Open("postgres", psqlInfo)
 	if err != nil {
@@ -59,8 +59,8 @@ func (dc *DatabaseController) Close() {
 	dc.DB.Close()
 }
 
-func NewDatabaseController(logger *slog.Logger) *DatabaseController {
-	db, err := databaseSetup(logger)
+func NewDatabaseController(getCredentials func() DatabaseCreds, logger *slog.Logger) *DatabaseController {
+	db, err := databaseSetup(getCredentials, logger)
 	if err != nil {
 		// because the database is a necessary element of this service
 		panic(err)

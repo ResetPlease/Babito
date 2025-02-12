@@ -23,7 +23,7 @@ func main() {
 	})
 	logger := slog.New(loggerHandler)
 
-	database := db.NewDatabaseController(logger)
+	database := db.NewDatabaseController(db.GetCredentials, logger)
 	defer database.Close()
 
 	JWTSecretKey := tools.GetenvWithPanic("JWT_SECRET")

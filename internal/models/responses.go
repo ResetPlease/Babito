@@ -1,19 +1,17 @@
 package models
 
-import "github.com/gin-gonic/gin"
-
-var ErrorEmptyRequestBody = gin.H{
-	"Error": "Empty request body",
+var ErrorEmptyRequestBody = ErrorResponse{
+	Errors: "Empty request body",
 }
 
-var ErrorWrongDataFormat = gin.H{
-	"Error": "Wrong data format",
+var ErrorWrongDataFormat = ErrorResponse{
+	Errors: "Wrong data format",
 }
 
-var ErrorMissingRequiredField = gin.H{
-	"Error": "Missing required field",
+var ErrorMissingRequiredField = ErrorResponse{
+	Errors: "Missing required field",
 }
 
-var ErrorInternalServerError = gin.H{
-	"Error": "Internal server error",
+var ErrorInternalServerError = ErrorResponse{
+	Errors: "Internal server error",
 }

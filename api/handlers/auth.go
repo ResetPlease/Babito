@@ -14,6 +14,12 @@ import (
 func (h *Handler) AuthHandler(c *gin.Context) {
 	var creds models.AuthRequest
 
+	if c.Request.Body == nil {
+		h.logger.Error("Got empty request body")
+		c.JSON(http.StatusBadRequest, models.ErrorEmptyRequestBody)
+		return
+	}
+
 	body, err := io.ReadAll(c.Request.Body)
 	if err != nil {
 		h.logger.Error("Got error while read request body", slog.Any("error", err))
@@ -32,9 +38,16 @@ func (h *Handler) AuthHandler(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, models.ErrorMissingRequiredField)
 		return
 	}
-	// TODO: ХЕШИРОВАТЬ ПАРОЛЬ
+
+	hashedPassword, err := tools.GenerateHash(creds.Password)
+	if err != nil {
+		h.logger.Error("Got error while generate hash for password", slog.Any("error", err))
+		c.JSON(http.StatusInternalServerError, models.ErrorInternalServerError)
+		return
+	}
+
 	// try to create new user else do nothing and get userID + username
-	userData, err := h.db.CreateNewUser(creds.Username, creds.Password, h.config.DefaultUserBalance)
+	userData, err := h.db.CreateNewUser(creds.Username, hashedPassword, h.config.DefaultUserBalance)
 	if err != nil {
 		h.logger.Error("failed to create new user", slog.Any("error", err), slog.Any("username", userData.Username))
 		c.JSON(http.StatusInternalServerError, models.ErrorInternalServerError)

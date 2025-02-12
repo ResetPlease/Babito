@@ -199,6 +199,8 @@ components:
         errors:
           type: string
           description: Сообщение об ошибке, описывающее проблему.
+      required:
+        - errors
 
     AuthRequest:
       type: object
