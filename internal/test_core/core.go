@@ -5,13 +5,15 @@ import (
 	"os"
 
 	"github.com/ResetPlease/Babito/api/handlers"
+	"github.com/ResetPlease/Babito/api/middleware"
 	"github.com/ResetPlease/Babito/internal/db"
 	"github.com/ResetPlease/Babito/internal/models"
 )
 
 type TestCore struct {
-	db      db.Database
-	Handler handlers.Handler
+	db         db.Database
+	Handler    handlers.Handler
+	Middleware middleware.Middleware
 }
 
 func GetTestDatabaseCreds() db.DatabaseCreds {
@@ -30,7 +32,8 @@ func NewTestCore() *TestCore {
 	testConfig := models.NewConfig("jwtsecret", 1000)
 	db := db.NewDatabaseController(GetTestDatabaseCreds, logger)
 	return &TestCore{
-		db:      db,
-		Handler: *handlers.NewHandler(db, logger, *testConfig),
+		db:         db,
+		Handler:    *handlers.NewHandler(db, logger, *testConfig),
+		Middleware: *middleware.NewMiddleware(db, logger, *testConfig),
 	}
 }
