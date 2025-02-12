@@ -1,11 +1,13 @@
 package tools
 
 import (
+	"errors"
 	"fmt"
 	"os"
 	"time"
 
 	"github.com/ResetPlease/Babito/internal/models"
+	"github.com/gin-gonic/gin"
 	"github.com/golang-jwt/jwt/v5"
 	"golang.org/x/crypto/bcrypt"
 )
@@ -48,4 +50,16 @@ func GenerateHash(password string) (string, error) {
 		return "", err
 	}
 	return string(hashedPassword), nil
+}
+
+func GetUserFromContext(c *gin.Context) (*models.ContextUser, error) {
+	rawUser, ok := c.Get(models.UserContextKey)
+	if !ok {
+		return nil, errors.New("user not exist in context")
+	}
+	user, ok := rawUser.(models.ContextUser)
+	if !ok {
+		return nil, errors.New("wrong user structure in context")
+	}
+	return &user, nil
 }

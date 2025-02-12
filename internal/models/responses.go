@@ -1,5 +1,7 @@
 package models
 
+import "github.com/gin-gonic/gin"
+
 var ErrorEmptyRequestBody = ErrorResponse{
 	Errors: "Empty request body",
 }
@@ -14,4 +16,12 @@ var ErrorMissingRequiredField = ErrorResponse{
 
 var ErrorInternalServerError = ErrorResponse{
 	Errors: "Internal server error",
+}
+
+var ErrorUnauthorized = ErrorResponse{
+	Errors: "Unauthorized",
+}
+
+var MessageOK = gin.H{
+	"Message": "OK",
 }
