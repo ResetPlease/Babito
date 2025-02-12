@@ -11,6 +11,7 @@ import (
 
 	"github.com/ResetPlease/Babito/internal/models"
 	testcore "github.com/ResetPlease/Babito/internal/test_core"
+	"github.com/ResetPlease/Babito/internal/tools"
 	"github.com/gin-gonic/gin"
 	"github.com/go-playground/assert/v2"
 	"github.com/golang-jwt/jwt/v5"
@@ -18,6 +19,13 @@ import (
 
 func TestAuthMiddleware(t *testing.T) {
 	testCore := testcore.NewTestCore()
+
+	authCreds := models.AuthRequest{
+		Username: "test",
+		Password: "test",
+	}
+	authBody, err := json.Marshal(authCreds)
+	assert.Equal(t, err, nil)
 
 	router := gin.Default()
 	authRouter := router.Group("/api")
@@ -27,13 +35,17 @@ func TestAuthMiddleware(t *testing.T) {
 	secure := router.Use(testCore.Middleware.AuthMiddleware())
 	{
 		secure.GET("/auth/middleware", func(c *gin.Context) {
+			// test for GetUserFromContext
+			user, err := tools.GetUserFromContext(c)
+			assert.Equal(t, err, nil)
+			assert.Equal(t, user.Username, authCreds.Username)
+
 			c.JSON(http.StatusOK, models.MessageOK)
 		})
 	}
 
 	t.Run("test_authorization_ok", func(t *testing.T) {
-		authBody := `{"username":"test", "password":"123"}`
-		authRequest, err := http.NewRequest(http.MethodPost, "/api/auth", strings.NewReader(authBody))
+		authRequest, err := http.NewRequest(http.MethodPost, "/api/auth", strings.NewReader(string(authBody)))
 		authResponse := httptest.NewRecorder()
 		assert.Equal(t, err, nil)
 		router.ServeHTTP(authResponse, authRequest)
