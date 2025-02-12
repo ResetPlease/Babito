@@ -5,6 +5,8 @@ import (
 
 	"github.com/ResetPlease/Babito/api/router"
 	"github.com/ResetPlease/Babito/internal/db"
+	"github.com/ResetPlease/Babito/internal/models"
+	"github.com/ResetPlease/Babito/internal/tools"
 	"gopkg.in/natefinch/lumberjack.v2"
 )
 
@@ -21,10 +23,14 @@ func main() {
 	})
 	logger := slog.New(loggerHandler)
 
-	database := db.NewDatabaseController(logger)
+	database := db.NewDatabaseController(db.GetCredentials, logger)
 	defer database.Close()
 
-	r := router.SetupRouter(database, logger)
+	JWTSecretKey := tools.GetenvWithPanic("JWT_SECRET")
+	const DefaultUserBalance = 1000
+	config := models.NewConfig(JWTSecretKey, DefaultUserBalance)
+
+	r := router.SetupRouter(*config, database, logger)
 
 	err := r.Run(":8080")
 	if err != nil {

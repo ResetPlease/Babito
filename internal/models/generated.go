@@ -25,7 +25,7 @@ type AuthResponse struct {
 // ErrorResponse defines model for ErrorResponse.
 type ErrorResponse struct {
 	// Errors Сообщение об ошибке, описывающее проблему.
-	Errors *string `json:"errors,omitempty"`
+	Errors string `json:"errors"`
 }
 
 // InfoResponse defines model for InfoResponse.

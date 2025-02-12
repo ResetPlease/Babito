@@ -21,6 +21,20 @@ jobs:
       with:
         go-version: '1.22.2'
 
+    - name: Start PostgreSQL for test
+      run: |
+        docker compose up db-test -d
+        for i in {1..10}; do
+          if pg_isready -h localhost -p 5050 -U postgres; then
+            echo "PostgreSQL is ready!"
+            exit 0
+          fi
+          echo "Waiting for PostgreSQL..."
+          sleep 3
+        done
+        echo "PostgreSQL failed to start!"
+        exit 1
+
     - name: Build
       run: go build -v ./...
 

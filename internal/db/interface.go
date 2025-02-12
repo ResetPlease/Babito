@@ -1,0 +1,9 @@
+package db
+
+import "github.com/ResetPlease/Babito/internal/models"
+
+type Database interface {
+	GetUserDataByUserID(id uint64) (*models.User, error)
+	GetUserDataByUsername(username string) (*models.User, error)
+	CreateNewUser(username string, hashedPassword string, balance int64) (*models.User, error)
+}
