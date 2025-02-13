@@ -3,6 +3,10 @@ GO := go
 .PHONY: default
 default: help
 
+.PHONY: deps
+deps:
+	go mod tidy
+
 .PHONY: generate-models
 generate-models:
 	oapi-codegen -package models -generate types -o internal/models/generated.go schemas/openapi.yaml
@@ -12,7 +16,7 @@ clear-logs:
 	rm -r ./*/*.log
 
 .PHONY: lint
-lint:
+lint: deps
 	golangci-lint run -v
 
 .PHONY: test
@@ -26,3 +30,4 @@ help:
 	@echo "  clear-logs  -  Удалить файлы логов"
 	@echo "  lint  -  Запустить линтер"
 	@echo "  test  -  Запустить тесты"
+	@echo "  deps  -  Установка всех зависимостей(напр. для golangci-lint)"
