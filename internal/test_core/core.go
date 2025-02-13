@@ -11,7 +11,7 @@ import (
 )
 
 type TestCore struct {
-	db         db.Database
+	DB         db.Database
 	Handler    handlers.Handler
 	Middleware middleware.Middleware
 }
@@ -32,7 +32,7 @@ func NewTestCore() *TestCore {
 	testConfig := models.NewConfig("jwtsecret", 1000)
 	db := db.NewDatabaseController(GetTestDatabaseCreds, logger)
 	return &TestCore{
-		db:         db,
+		DB:         db,
 		Handler:    *handlers.NewHandler(db, logger, *testConfig),
 		Middleware: *middleware.NewMiddleware(db, logger, *testConfig),
 	}

@@ -2,6 +2,8 @@ package models
 
 import "github.com/gin-gonic/gin"
 
+const AuthHeaderKey = "Authorization"
+
 var ErrorBadRequest = ErrorResponse{
 	Errors: "Bad request",
 }

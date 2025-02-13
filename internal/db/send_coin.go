@@ -1,6 +1,7 @@
 package db
 
 import (
+	"database/sql"
 	_ "embed"
 	"log/slog"
 
@@ -72,6 +73,13 @@ func (dc *DatabaseController) SendCoinByUsername(fromUserID uint64, toUserUserna
 	}
 
 	_, err = tx.Exec(sendCoinQuery, fromUser.ID, toUser.ID, amount)
+	if err != nil {
+		return err
+	}
+
+	nullItemName := sql.NullString{String: "", Valid: true}
+
+	_, err = tx.Exec(createOperationQuery, fromUser.ID, models.TRANSFER, amount, toUser.ID, nullItemName)
 	if err != nil {
 		return err
 	}

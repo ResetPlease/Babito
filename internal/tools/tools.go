@@ -44,6 +44,30 @@ func GenerateJWTToken(userID uint64, username string, secretKey string) (string,
 	return signedToken, nil
 }
 
+func ParseJWTToken(token string, config models.Config) (*models.ContextUser, error) {
+	claims := &models.UserJWTClaims{}
+	tokenJWT, err := jwt.ParseWithClaims(token, claims, func(token *jwt.Token) (interface{}, error) {
+		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
+			return nil, fmt.Errorf("unexpected signing method: %v", token.Header["alg"])
+		}
+		return []byte(config.JWTSecret), nil
+	})
+
+	if err != nil || !tokenJWT.Valid {
+		return nil, errors.New("token invalid")
+	}
+
+	if claims.ExpiresAt == nil || claims.ExpiresAt.Unix() < time.Now().Unix() {
+		return nil, errors.New("token expired")
+	}
+
+	user := models.ContextUser{
+		ID:       claims.UserID,
+		Username: claims.Username,
+	}
+	return &user, nil
+}
+
 func GenerateHash(password string) (string, error) {
 	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(password), bcrypt.DefaultCost)
 	if err != nil {

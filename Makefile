@@ -13,10 +13,16 @@ clear-logs:
 
 .PHONY: lint
 lint:
-	golangci-lint run
+	golangci-lint run -v
+
+.PHONY: test
+test:
+	TEST_MODE=1 go test -v ./...
 
 .PHONY: help
 help:
 	@echo "Доступные команды:"
 	@echo "  generate-models  -  Сгенерировать модели из openapi спецификации"
 	@echo "  clear-logs  -  Удалить файлы логов"
+	@echo "  lint  -  Запустить линтер"
+	@echo "  test  -  Запустить тесты"
