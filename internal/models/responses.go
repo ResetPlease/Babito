@@ -2,6 +2,10 @@ package models
 
 import "github.com/gin-gonic/gin"
 
+var ErrorBadRequest = ErrorResponse{
+	Errors: "Bad request",
+}
+
 var ErrorEmptyRequestBody = ErrorResponse{
 	Errors: "Empty request body",
 }
@@ -20,6 +24,14 @@ var ErrorInternalServerError = ErrorResponse{
 
 var ErrorUnauthorized = ErrorResponse{
 	Errors: "Unauthorized",
+}
+
+var ErrorUserNotExist = ErrorResponse{
+	Errors: "User not exist",
+}
+
+var ErrorNotEnoughtFunds = ErrorResponse{
+	Errors: "Not enought funds",
 }
 
 var MessageOK = gin.H{

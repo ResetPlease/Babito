@@ -11,6 +11,10 @@ generate-models:
 clear-logs:
 	rm -r ./*/*.log
 
+.PHONY: lint
+lint:
+	golangci-lint run
+
 .PHONY: help
 help:
 	@echo "Доступные команды:"

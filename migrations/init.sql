@@ -15,8 +15,7 @@ CREATE TABLE Products
 
 CREATE TABLE Operations 
 (
-    id SERIAL PRIMARY KEY,
-    user_id INTEGER REFERENCES Users(id) ON DELETE CASCADE,
+    user_id INTEGER REFERENCES Users(id) ON DELETE CASCADE PRIMARY KEY,
     type VARCHAR(50) NOT NULL,
     amount INTEGER NOT NULL,
     target_user_id INTEGER REFERENCES Users(id) ON DELETE SET NULL,
@@ -32,5 +31,5 @@ CREATE TABLE Inventory
 );
 
 CREATE INDEX idx_username ON Users(username);
-CREATE INDEX operation_idx_user_id ON Operations(user_id);
+CREATE INDEX operation_idx_target_user_id ON Operations(target_user_id);
 CREATE INDEX inventory_idx_user_id ON Inventory(user_id);
