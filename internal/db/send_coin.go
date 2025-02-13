@@ -77,7 +77,7 @@ func (dc *DatabaseController) SendCoinByUsername(fromUserID uint64, toUserUserna
 		return err
 	}
 
-	nullItemName := sql.NullString{String: "", Valid: true}
+	nullItemName := sql.NullString{String: "", Valid: false}
 
 	_, err = tx.Exec(createOperationQuery, fromUser.ID, models.TRANSFER, amount, toUser.ID, nullItemName)
 	if err != nil {

@@ -8,6 +8,7 @@ type Database interface {
 	CreateNewUser(username string, hashedPassword string, balance int64) (*models.User, error)
 
 	SendCoinByUsername(fromUserID uint64, toUserUsername string, amount int64) error
+	BuyItemByName(userID uint64, itemName string) error
 
 	GetTransfersByUserID(userID uint64) (models.Operations, error)
 
