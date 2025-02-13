@@ -11,6 +11,7 @@ type Database interface {
 	BuyItemByName(userID uint64, itemName string) error
 
 	GetTransfersByUserID(userID uint64) (models.Operations, error)
+	GetPurchaseByUserID(userID uint64) (models.Operations, error)
 
 	TestClearOperationHistory() error
 	TestUpdateUsersBalance() error
