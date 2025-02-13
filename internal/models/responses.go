@@ -3,6 +3,7 @@ package models
 import "github.com/gin-gonic/gin"
 
 const AuthHeaderKey = "Authorization"
+const ParamItemName = "item"
 
 var ErrorBadRequest = ErrorResponse{
 	Errors: "Bad request",
@@ -34,6 +35,10 @@ var ErrorUserNotExist = ErrorResponse{
 
 var ErrorNotEnoughtFunds = ErrorResponse{
 	Errors: "Not enought funds",
+}
+
+var ErrorProductNotFound = ErrorResponse{
+	Errors: "Product not found",
 }
 
 var MessageOK = gin.H{

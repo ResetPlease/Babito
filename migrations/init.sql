@@ -25,14 +25,20 @@ CREATE TABLE Operations
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
-CREATE TABLE Inventory
-(
-    user_id INTEGER REFERENCES Users(id) ON DELETE CASCADE,
-    product_id INTEGER REFERENCES Products(id) ON DELETE CASCADE,
-    count INTEGER NOT NULL DEFAULT 0
-);
-
 CREATE INDEX idx_username ON Users(username);
 CREATE INDEX operation_idx_user_id ON Operations(user_id);
 CREATE INDEX operation_idx_target_user_id ON Operations(target_user_id);
-CREATE INDEX inventory_idx_user_id ON Inventory(user_id);
+
+INSERT INTO Products (name, price)
+VALUES
+    ('t-shirt', 80),
+    ('cup', 20),
+    ('book', 50),
+    ('pen', 10),
+    ('powerbank', 200),
+    ('hoody', 300),
+    ('umbrella', 200),
+    ('socks', 10),
+    ('wallet', 50),
+    ('pink-hoody', 500)
+;
