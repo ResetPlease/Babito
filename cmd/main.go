@@ -2,23 +2,23 @@ package main
 
 import (
 	"log/slog"
+	"os"
 
 	"github.com/ResetPlease/Babito/api/router"
 	"github.com/ResetPlease/Babito/internal/db"
 	"github.com/ResetPlease/Babito/internal/models"
 	"github.com/ResetPlease/Babito/internal/tools"
-	"gopkg.in/natefinch/lumberjack.v2"
 )
 
 func main() {
-	logWriter := &lumberjack.Logger{
-		Filename:   "./app.log",
-		MaxSize:    100,
-		MaxBackups: 3,
-		MaxAge:     28,
-		Compress:   true,
-	}
-	loggerHandler := slog.NewTextHandler(logWriter, &slog.HandlerOptions{
+	// logWriter := &lumberjack.Logger{
+	// 	Filename:   "./app.log",
+	// 	MaxSize:    100,
+	// 	MaxBackups: 3,
+	// 	MaxAge:     28,
+	// 	Compress:   true,
+	// }
+	loggerHandler := slog.NewTextHandler(os.Stdout, &slog.HandlerOptions{
 		Level: slog.LevelInfo,
 	})
 	logger := slog.New(loggerHandler)

@@ -2,7 +2,6 @@ package middleware_test
 
 import (
 	"encoding/json"
-	"fmt"
 	"net/http"
 	"net/http/httptest"
 	"strings"
@@ -56,7 +55,7 @@ func TestAuthMiddleware(t *testing.T) {
 		assert.NotEqual(t, responseToken.Token, nil)
 
 		request, err := http.NewRequest(http.MethodGet, "/auth/middleware", nil)
-		request.Header.Set("Authorization", fmt.Sprintf("Bearer %s", *responseToken.Token))
+		testCore.SetAuthToken(request, *responseToken.Token)
 		assert.Equal(t, err, nil)
 
 		rr := httptest.NewRecorder()
@@ -71,7 +70,7 @@ func TestAuthMiddleware(t *testing.T) {
 
 	t.Run("test_unauthorized_with_fake_token", func(t *testing.T) {
 		request, err := http.NewRequest(http.MethodGet, "/auth/middleware", nil)
-		request.Header.Set("Authorization", "Bearer jwt")
+		testCore.SetAuthToken(request, "jwt")
 		assert.Equal(t, err, nil)
 
 		rr := httptest.NewRecorder()
@@ -102,7 +101,7 @@ func TestAuthMiddleware(t *testing.T) {
 		assert.Equal(t, err, nil)
 
 		request, err := http.NewRequest(http.MethodGet, "/auth/middleware", nil)
-		request.Header.Set("Authorization", fmt.Sprintf("Bearer %s", signedToken))
+		testCore.SetAuthToken(request, signedToken)
 		assert.Equal(t, err, nil)
 
 		rr := httptest.NewRecorder()

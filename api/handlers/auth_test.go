@@ -16,7 +16,7 @@ import (
 func TestAuthHandler(t *testing.T) {
 	router := gin.Default()
 	testCore := testcore.NewTestCore()
-	router.GET("/api/auth", testCore.Handler.AuthHandler)
+	router.POST("/api/auth", testCore.Handler.AuthHandler)
 
 	t.Run("test_status_ok", func(t *testing.T) {
 		userData := models.AuthRequest{
@@ -27,7 +27,7 @@ func TestAuthHandler(t *testing.T) {
 		data, err := json.Marshal(userData)
 		assert.Equal(t, err, nil)
 
-		req, err := http.NewRequest("GET", "/api/auth", strings.NewReader(string(data)))
+		req, err := http.NewRequest(http.MethodPost, "/api/auth", strings.NewReader(string(data)))
 		if err != nil {
 			t.Fatal(err)
 		}
@@ -46,7 +46,7 @@ func TestAuthHandler(t *testing.T) {
 	})
 
 	t.Run("test_bad_request_wrong_data_format", func(t *testing.T) {
-		req, err := http.NewRequest("GET", "/api/auth", strings.NewReader(""))
+		req, err := http.NewRequest(http.MethodPost, "/api/auth", strings.NewReader(""))
 		if err != nil {
 			t.Fatal(err)
 		}
@@ -68,7 +68,7 @@ func TestAuthHandler(t *testing.T) {
 		data, err := json.Marshal(userData)
 		assert.Equal(t, err, nil)
 
-		req, err := http.NewRequest("GET", "/api/auth", strings.NewReader(string(data)))
+		req, err := http.NewRequest(http.MethodPost, "/api/auth", strings.NewReader(string(data)))
 		if err != nil {
 			t.Fatal(err)
 		}
