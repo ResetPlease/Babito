@@ -30,7 +30,7 @@ func (dc *DatabaseController) GetUserDataByUserID(id uint64) (*models.User, erro
 
 	if err != nil {
 		if errors.Is(err, sql.ErrNoRows) {
-			return nil, models.ErrDatabaseNotFound
+			return nil, models.ErrUserNotFound
 		}
 		dc.logger.Error("Got error while getting user data", slog.Any("error", err))
 		return nil, err
@@ -51,7 +51,7 @@ func (dc *DatabaseController) GetUserDataByUsername(username string) (*models.Us
 
 	if err != nil {
 		if errors.Is(err, sql.ErrNoRows) {
-			return nil, models.ErrDatabaseNotFound
+			return nil, models.ErrUserNotFound
 		}
 		dc.logger.Error("Got error while getting user data", slog.Any("error", err))
 		return nil, err

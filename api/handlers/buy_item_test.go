@@ -56,7 +56,7 @@ func TestBuyItem(t *testing.T) {
 		assert.Equal(t, err, nil)
 		assert.Equal(t, len(operations), 1)
 		assert.Equal(t, operations[0].Amount, product.Price())
-		assert.Equal(t, operations[0].Item, string(product))
+		assert.Equal(t, operations[0].Item.String, string(product))
 	})
 
 	t.Run("test_error_responses", func(t *testing.T) {

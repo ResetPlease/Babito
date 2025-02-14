@@ -1,6 +1,9 @@
 package models
 
-import "errors"
+import (
+	"database/sql"
+	"errors"
+)
 
 var ErrDatabaseNotFound = errors.New("database not found")
 var ErrUserNotFound = errors.New("user not found")
@@ -15,12 +18,13 @@ const (
 )
 
 type Operation struct {
-	UserID         uint64
-	Type           OperationType
-	Amount         int64
-	TargetUserID   uint64
-	TargetUsername string
-	Item           string
+	UserID         uint64         `json:"user_id"`
+	Username       string         `json:"username"`
+	Type           OperationType  `json:"type"`
+	Amount         int64          `json:"ampunt"`
+	TargetUserID   sql.NullInt64  `json:"target_user_id"`
+	TargetUsername sql.NullString `json:"target_username"`
+	Item           sql.NullString `json:"item"`
 }
 
 type Operations []Operation

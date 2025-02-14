@@ -22,6 +22,12 @@ type AuthResponse struct {
 	Token *string `json:"token,omitempty"`
 }
 
+// CoinHistoryField defines model for CoinHistoryField.
+type CoinHistoryField struct {
+	Received *RecivedField `json:"received,omitempty"`
+	Sent     *SentField    `json:"sent,omitempty"`
+}
+
 // ErrorResponse defines model for ErrorResponse.
 type ErrorResponse struct {
 	// Errors Сообщение об ошибке, описывающее проблему.
@@ -30,32 +36,35 @@ type ErrorResponse struct {
 
 // InfoResponse defines model for InfoResponse.
 type InfoResponse struct {
-	CoinHistory *struct {
-		Received *[]struct {
-			// Amount Количество полученных монет.
-			Amount *int `json:"amount,omitempty"`
-
-			// FromUser Имя пользователя, который отправил монеты.
-			FromUser *string `json:"fromUser,omitempty"`
-		} `json:"received,omitempty"`
-		Sent *[]struct {
-			// Amount Количество отправленных монет.
-			Amount *int `json:"amount,omitempty"`
-
-			// ToUser Имя пользователя, которому отправлены монеты.
-			ToUser *string `json:"toUser,omitempty"`
-		} `json:"sent,omitempty"`
-	} `json:"coinHistory,omitempty"`
+	CoinHistory *CoinHistoryField `json:"coinHistory,omitempty"`
 
 	// Coins Количество доступных монет.
-	Coins     *int `json:"coins,omitempty"`
-	Inventory *[]struct {
-		// Quantity Количество предметов.
-		Quantity *int `json:"quantity,omitempty"`
+	Coins     *int            `json:"coins,omitempty"`
+	Inventory *InventoryField `json:"inventory,omitempty"`
+}
 
-		// Type Тип предмета.
-		Type *string `json:"type,omitempty"`
-	} `json:"inventory,omitempty"`
+// InventoryField defines model for InventoryField.
+type InventoryField = []InventoryItem
+
+// InventoryItem defines model for InventoryItem.
+type InventoryItem struct {
+	// Quantity Количество предметов.
+	Quantity int `json:"quantity"`
+
+	// Type Тип предмета.
+	Type string `json:"type"`
+}
+
+// RecivedField defines model for RecivedField.
+type RecivedField = []RecivedItem
+
+// RecivedItem defines model for RecivedItem.
+type RecivedItem struct {
+	// Amount Количество полученных монет.
+	Amount int `json:"amount"`
+
+	// FromUser Имя пользователя, который отправил монеты.
+	FromUser string `json:"fromUser"`
 }
 
 // SendCoinRequest defines model for SendCoinRequest.
@@ -64,6 +73,18 @@ type SendCoinRequest struct {
 	Amount int `json:"amount"`
 
 	// ToUser Имя пользователя, которому нужно отправить монеты.
+	ToUser string `json:"toUser"`
+}
+
+// SentField defines model for SentField.
+type SentField = []SentItem
+
+// SentItem defines model for SentItem.
+type SentItem struct {
+	// Amount Количество отправленных монет.
+	Amount int `json:"amount"`
+
+	// ToUser Имя пользователя, которому отправлены монеты.
 	ToUser string `json:"toUser"`
 }
 

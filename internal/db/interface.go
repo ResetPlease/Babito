@@ -12,6 +12,7 @@ type Database interface {
 
 	GetTransfersByUserID(userID uint64) (models.Operations, error)
 	GetPurchaseByUserID(userID uint64) (models.Operations, error)
+	GetAllUserOperations(userID uint64) (models.Operations, error)
 
 	TestClearOperationHistory() error
 	TestUpdateUsersBalance() error

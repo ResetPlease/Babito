@@ -18,7 +18,6 @@ func (h *Handler) SendCoinHandler(c *gin.Context) {
 		c.JSON(http.StatusUnauthorized, models.ErrorUnauthorized)
 		return
 	}
-	h.logger.Info("Got requst from User", slog.Any("user", userData))
 
 	if c.Request.Body == nil {
 		c.JSON(http.StatusBadRequest, models.ErrorEmptyRequestBody)

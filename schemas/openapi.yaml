@@ -157,41 +157,71 @@ components:
           type: integer
           description: Количество доступных монет.
         inventory:
-          type: array
-          items:
-            type: object
-            properties:
-              type:
-                type: string
-                description: Тип предмета.
-              quantity:
-                type: integer
-                description: Количество предметов.
+          $ref: "#/components/schemas/InventoryField"
         coinHistory:
-          type: object
-          properties:
-            received:
-              type: array
-              items:
-                type: object
-                properties:
-                  fromUser:
-                    type: string
-                    description: Имя пользователя, который отправил монеты.
-                  amount:
-                    type: integer
-                    description: Количество полученных монет.
-            sent:
-              type: array
-              items:
-                type: object
-                properties:
-                  toUser:
-                    type: string
-                    description: Имя пользователя, которому отправлены монеты.
-                  amount:
-                    type: integer
-                    description: Количество отправленных монет.
+          $ref: "#/components/schemas/CoinHistoryField"
+
+    CoinHistoryField:
+      type: object
+      properties:
+        received:
+          $ref: "#/components/schemas/RecivedField"
+        sent:
+          $ref: "#/components/schemas/SentField"
+
+    InventoryField:
+      type: array
+      items:
+        $ref: "#/components/schemas/InventoryItem"
+    
+    InventoryItem:
+      type: object
+      properties:
+        type:
+          type: string
+          description: Тип предмета.
+        quantity:
+          type: integer
+          description: Количество предметов.
+      required:
+        - type
+        - quantity
+
+    RecivedField:
+      type: array
+      items:
+        $ref: "#/components/schemas/RecivedItem"
+    
+    RecivedItem:
+      type: object
+      properties:
+        fromUser:
+          type: string
+          description: Имя пользователя, который отправил монеты.
+        amount:
+          type: integer
+          description: Количество полученных монет.
+      required:
+        - fromUser
+        - amount
+
+    SentField:
+      type: array
+      items:
+        $ref: "#/components/schemas/SentItem"
+    
+    SentItem:
+      type: object
+      properties:
+        toUser:
+          type: string
+          description: Имя пользователя, которому отправлены монеты.
+        amount:
+          type: integer
+          description: Количество отправленных монет.
+      required:
+        - toUser
+        - amount
 
     ErrorResponse:
       type: object

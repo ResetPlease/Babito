@@ -68,7 +68,7 @@ func TestSendCoin(t *testing.T) {
 		assert.Equal(t, err, nil)
 		assert.Equal(t, len(operations), 1)
 		assert.Equal(t, operations[0].Amount, int64(100))
-		assert.Equal(t, operations[0].TargetUsername, secondUser.Username)
+		assert.Equal(t, operations[0].TargetUsername.String, secondUser.Username)
 	})
 
 	t.Run("test_error_responses", func(t *testing.T) {
