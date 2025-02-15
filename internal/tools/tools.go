@@ -1,6 +1,7 @@
 package tools
 
 import (
+	"crypto/sha256"
 	"errors"
 	"fmt"
 	"os"
@@ -9,7 +10,6 @@ import (
 	"github.com/ResetPlease/Babito/internal/models"
 	"github.com/gin-gonic/gin"
 	"github.com/golang-jwt/jwt/v5"
-	"golang.org/x/crypto/bcrypt"
 )
 
 func GetenvWithPanic(key string) string {
@@ -68,12 +68,10 @@ func ParseJWTToken(token string, config models.Config) (*models.ContextUser, err
 	return &user, nil
 }
 
-func GenerateHash(password string) (string, error) {
-	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(password), bcrypt.DefaultCost)
-	if err != nil {
-		return "", err
-	}
-	return string(hashedPassword), nil
+func GenerateHash(password string) string {
+	hash := sha256.New()
+	hash.Write([]byte(password))
+	return fmt.Sprintf("%x", hash.Sum(nil))
 }
 
 func GetUserFromContext(c *gin.Context) (*models.ContextUser, error) {

@@ -39,6 +39,10 @@ func databaseSetup(getCreds func() DatabaseCreds, logger *slog.Logger) (*sql.DB,
 		return nil, err
 	}
 
+	db.SetMaxOpenConns(200)
+	db.SetMaxIdleConns(50)
+	db.SetConnMaxLifetime(0)
+
 	err = db.Ping()
 	if err != nil {
 		logger.Error("Failed healthcheck postgres", slog.Any("error", err))
