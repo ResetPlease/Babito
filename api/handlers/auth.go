@@ -34,22 +34,16 @@ func (h *Handler) AuthHandler(c *gin.Context) {
 		return
 	}
 
-	if creds.Username == "" || creds.Password == "" {
+	if len(creds.Username) == 0 || len(creds.Password) == 0 {
 		c.JSON(http.StatusBadRequest, models.ErrorMissingRequiredField)
 		return
 	}
 
-	hashedPassword, err := tools.GenerateHash(creds.Password)
-	if err != nil {
-		h.logger.Error("Got error while generate hash for password", slog.Any("error", err))
-		c.JSON(http.StatusInternalServerError, models.ErrorInternalServerError)
-		return
-	}
-
+	hashedPassword := tools.GenerateHash(creds.Password)
 	// try to create new user else do nothing and get userID + username
 	userData, err := h.db.CreateNewUser(creds.Username, hashedPassword, h.config.DefaultUserBalance)
 	if err != nil {
-		h.logger.Error("failed to create new user", slog.Any("error", err), slog.Any("username", userData.Username))
+		h.logger.Error("failed to create new user", slog.Any("error", err), slog.Any("username", creds.Username))
 		c.JSON(http.StatusInternalServerError, models.ErrorInternalServerError)
 		return
 	}
