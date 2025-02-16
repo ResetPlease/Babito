@@ -1,0 +1,32 @@
+run:
+  go: "1.22.2"
+  timeout: 3m
+  tests: true
+  output:
+    format: colored-line-number
+
+linters:
+  enable:
+    - govet
+    - staticcheck
+    - errcheck
+    - sqlclosecheck
+    - gosec
+    - rowserrcheck
+
+linters-settings:
+  staticcheck:
+    checks: ["all"]
+
+  gosec:
+    excludes:
+      - G115
+
+  sqlclosecheck:
+    check-prepared-stmt: true
+
+  noctx:
+    check-http-response-body: true
+
+  govet:
+    shadow: true
