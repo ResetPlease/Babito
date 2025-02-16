@@ -8,8 +8,8 @@ deps:
 	go mod tidy
 
 .PHONY: generate-models
-generate-models:
-	oapi-codegen -package models -generate types -o internal/models/generated.go schemas/openapi.yaml
+generate-models: deps
+	oapi-codegen -package models -generate types -o internal/models/generated.gen.go schemas/openapi.yaml
     
 .PHONY: clear-logs
 clear-logs:
@@ -23,6 +23,10 @@ lint: deps
 test:
 	TEST_MODE=1 go test -v ./...
 
+.PHONY: run
+run:
+	sudo docker compose up avito-shop-service --build -d
+
 .PHONY: help
 help:
 	@echo "Доступные команды:"
@@ -31,3 +35,4 @@ help:
 	@echo "  lint  -  Запустить линтер"
 	@echo "  test  -  Запустить тесты"
 	@echo "  deps  -  Установка всех зависимостей(напр. для golangci-lint)"
+	@echo "  run   -  Запуск проекта"

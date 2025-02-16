@@ -1,0 +1,293 @@
+{
+	"info": {
+		"_postman_id": "197f06c0-6f56-4b4d-a643-57409036d1e0",
+		"name": "Babito",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "41533845"
+	},
+	"item": [
+		{
+			"name": "Auth | Get JWT",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"Username\" : \"username\",\n    \"Password\" : \"password\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/api/auth",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"auth"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Send Coin",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"pm.sendRequest({",
+							"    url:  \"localhost:8080/api/auth\",",
+							"    method: \"POST\",",
+							"    header: {",
+							"        \"Content-Type\": \"application/json\"",
+							"    },",
+							"    body: {",
+							"        mode: \"raw\",",
+							"        raw: JSON.stringify({",
+							"            \"username\": \"user\",",
+							"            \"password\": \"password\"",
+							"        })",
+							"    }",
+							"}, function (err, res) {",
+							"    if (err) {",
+							"        console.log(\"Ошибка авторизации:\", err);",
+							"    } else {",
+							"        let jsonResponse = res.json();",
+							"        console.log(jsonResponse);",
+							"        let token = jsonResponse.token; // Убедитесь, что ключ совпадает с API",
+							"        pm.environment.set(\"auth_token\", token);",
+							"    }",
+							"});",
+							"",
+							"pm.sendRequest({",
+							"    url:  \"localhost:8080/api/auth\",",
+							"    method: \"POST\",",
+							"    header: {",
+							"        \"Content-Type\": \"application/json\"",
+							"    },",
+							"    body: {",
+							"        mode: \"raw\",",
+							"        raw: JSON.stringify({",
+							"            \"username\": \"user2\",",
+							"            \"password\": \"password\"",
+							"        })",
+							"    }",
+							"}, function (err, res) {",
+							"    if (err) {",
+							"        console.log(\"Ошибка авторизации для второго юзера:\", err);",
+							"    }",
+							"});",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{auth_token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"ToUser\" : \"user\",\n    \"Amount\" : 10\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/api/sendCoin",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"sendCoin"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Buy item",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"pm.sendRequest({",
+							"    url:  \"localhost:8080/api/auth\",",
+							"    method: \"POST\",",
+							"    header: {",
+							"        \"Content-Type\": \"application/json\"",
+							"    },",
+							"    body: {",
+							"        mode: \"raw\",",
+							"        raw: JSON.stringify({",
+							"            \"username\": \"user\",",
+							"            \"password\": \"password\"",
+							"        })",
+							"    }",
+							"}, function (err, res) {",
+							"    if (err) {",
+							"        console.log(\"Ошибка авторизации:\", err);",
+							"    } else {",
+							"        let jsonResponse = res.json();",
+							"        console.log(jsonResponse);",
+							"        let token = jsonResponse.token; // Убедитесь, что ключ совпадает с API",
+							"        pm.environment.set(\"auth_token\", token);",
+							"    }",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/api/buy/bebra",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"buy",
+						"bebra"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Info",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"pm.sendRequest({",
+							"    url:  \"localhost:8080/api/auth\",",
+							"    method: \"POST\",",
+							"    header: {",
+							"        \"Content-Type\": \"application/json\"",
+							"    },",
+							"    body: {",
+							"        mode: \"raw\",",
+							"        raw: JSON.stringify({",
+							"            \"username\": \"user\",",
+							"            \"password\": \"password\"",
+							"        })",
+							"    }",
+							"}, function (err, res) {",
+							"    if (err) {",
+							"        console.log(\"Ошибка авторизации:\", err);",
+							"    } else {",
+							"        let jsonResponse = res.json();",
+							"        console.log(jsonResponse);",
+							"        let token = jsonResponse.token; // Убедитесь, что ключ совпадает с API",
+							"        pm.environment.set(\"auth_token\", token);",
+							"    }",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{auth_token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/api/info",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"info"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "localhost:8080",
+			"type": "string",
+			"disabled": true
+		}
+	]
+}
