@@ -81,4 +81,27 @@ func TestAuthHandler(t *testing.T) {
 		expected := `{"errors":"Missing required field"}`
 		assert.Equal(t, expected, rr.Body.String())
 	})
+
+	t.Run("test_unauthorized_wrong_password", func(t *testing.T) {
+		userData := models.AuthRequest{
+			Username: "test", // already exist
+			Password: "wrong_password",
+		}
+
+		data, err := json.Marshal(userData)
+		assert.Equal(t, err, nil)
+
+		req, err := http.NewRequest(http.MethodPost, "/api/auth", strings.NewReader(string(data)))
+		if err != nil {
+			t.Fatal(err)
+		}
+
+		rr := httptest.NewRecorder()
+
+		router.ServeHTTP(rr, req)
+
+		assert.Equal(t, http.StatusUnauthorized, rr.Code)
+		expected := `{"errors":"Unauthorized"}`
+		assert.Equal(t, expected, rr.Body.String())
+	})
 }

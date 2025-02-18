@@ -62,7 +62,7 @@ func (dc *DatabaseController) GetUserDataByUsername(username string) (*models.Us
 
 func (dc *DatabaseController) CreateNewUser(username string, hashedPassword string, balance int64) (*models.User, error) {
 	var user models.User
-	err := dc.DB.QueryRow(insertNewUserDataQuery, username, hashedPassword, balance).Scan(&user.ID, &user.Username)
+	err := dc.DB.QueryRow(insertNewUserDataQuery, username, hashedPassword, balance).Scan(&user.ID, &user.Username, &user.HashedPassword)
 	if err != nil {
 		if errors.Is(err, sql.ErrNoRows) {
 			return nil, models.ErrDatabaseNotFound

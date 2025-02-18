@@ -48,6 +48,11 @@ func (h *Handler) AuthHandler(c *gin.Context) {
 		return
 	}
 
+	if hashedPassword != userData.HashedPassword {
+		c.JSON(http.StatusUnauthorized, models.ErrorUnauthorized)
+		return
+	}
+
 	token, err := tools.GenerateJWTToken(userData.ID, userData.Username, h.config.JWTSecret)
 	if err != nil {
 		h.logger.Error("failed to create JWT token for user", slog.Any("error", err), slog.Any("username", userData.Username))
